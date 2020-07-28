@@ -13,10 +13,10 @@ Current "active" library: Material-UI
 Run `npm install` on master to ensure all the used libraries are installed
 
 To switch between the POCs (for cleaner code and laziness of not making multiple pages and a dropdown selector) switch
- between the commits. 
- Material UI - HEAD
- Grommet - 9dcebc90
- PrimeReact - da4af8bd
+ between the branches. 
+ Material UI - master
+ Grommet - Grommet
+ PrimeReact - PrimeReact
  
 ### What was done to evaluate the libraries.
 
