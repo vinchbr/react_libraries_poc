@@ -6,33 +6,5 @@ html { font-family: 'Inter', sans-serif; }
 
 .app-name {
   background-color: coral;
-  padding: .8rem;
-}
-
-.logo {
-  max-height: 3rem;
-  padding: 0.25rem;
-}
-.header-bar {
-  background-color: transparent !important;
-}
-.top-logo-bar {
-  background-color: gainsboro;
-}
-
-.nav-bar {
-  background-color: midnightblue;
-  max-height: 3.6rem;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.NavButton {
-  border-left: 0 !important;
-}
-
-.SubmitButton {
-  margin-top: 1rem !important;
+  padding: .6rem;
 }

@@ -2,121 +2,93 @@ import React, { useState }  from 'react'
 import './App.scss'
 import logo from './genericLogo.svg'
 import {
-    AppBar,
+    Anchor,
     Box,
-    Button, Dialog,
-    FormControl, Grid, IconButton,
-    TextField,
-    Toolbar,
-    Typography,
-    withStyles
-} from "@material-ui/core"
-import {ToggleButtonGroup, ToggleButton} from "@material-ui/lab"
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {Visibility, VisibilityOff} from "@material-ui/icons";
+    Button,
+    Form,
+    FormField,
+    grommet,
+    Grommet,
+    Header,
+    Image,
+    Layer,
+    Nav,
+    Text,
+    TextInput
+} from 'grommet'
+import {Login, Logout} from 'grommet-icons'
+import {deepMerge} from "grommet/utils";
+import {NavButton} from "./component/NavButton";
 
-const NavButton = withStyles({
-    root: {
-        borderRadius: 0,
-        border: "unset",
-        borderBottom: "solid 3px transparent",
-        color: "white",
-        maxHeight: "3.6rem",
-        alignItems: "unset",
-        '&:hover': {
-            borderBottom: "coral solid 3px",
-            backgroundColor: "unset"
+const customTheme = deepMerge(grommet, {
+    global: {
+        colors: {
+            brand: 'midnightblue'
         },
     },
-    selected: {
-        borderBottom: "coral solid 3px",
-        color: "white !important"
-    }
-})(ToggleButton)
-
+    anchor: {
+        color: {
+            light: 'white',
+        },
+        hover: {
+            textDecoration: 'none',
+            extend: `
+               border-bottom: solid 5px darkorange;
+               margin-bottom: -.82rem;
+            `
+        },
+        extend: `
+                padding-top: .9rem;
+            `
+    },
+})
 const App = () => {
     const [username, setUsername] = useState('')
-    const [ password, setPassword] = useState('')
+    const [password, setPassword] = useState('')
     const [modalVisibility, setModalVisibility] = useState(false)
     const [activeNav, setActiveNav] = useState()
-    const [showPassword, setShowPassword] = useState(false)
-    const handleActiveButton = (event: any, newActive: any) => {
-        setActiveNav(newActive)
-    }
-
-    const handleClickShowPassword = () => {
-       setShowPassword(!showPassword)
-    }
-
-    const handleMouseDownPassword = (event: any) => {
-        event.preventDefault();
-    };
   return (
-      <>
-          <div className='flex-grow'>
-          <AppBar position='static' className="header-bar">
-              <Toolbar variant="dense" className='top-logo-bar'>
-                  <Box className='flex-grow'>
-                    <img src={logo} className='logo' alt="logo"/>
-                  </Box>
-                 <Button>
-                     Logout  <ExitToAppIcon/>
-                 </Button>
-              </Toolbar>
-              <Toolbar disableGutters variant='dense' className='nav-bar'>
-                  <Typography variant="h6" className='app-name'>
-                      Extra Long Apex App Name
-                  </Typography>
-                  <ToggleButtonGroup exclusive size='large' value={activeNav} onChange={handleActiveButton}>
-                    <NavButton value="nav-1" disableFocusRipple className="NavButton">Nav 1</NavButton>
-                    <NavButton value="nav-2" disableFocusRipple className="NavButton">Nav 2</NavButton>
-                    <NavButton value="nav-3" disableFocusRipple className="NavButton">Nav 3</NavButton>
-                    <NavButton value="nav-4" disableFocusRipple className="NavButton">Nav 4</NavButton>
-                  </ToggleButtonGroup>
-              </Toolbar>
-          </AppBar>
-          </div>
-          <Grid container spacing={3}>
-              <Grid item xs={12}/>
-              <Grid item xs={12}/>
-              <Grid item xs={4}/>
-              <Grid item xs={3}>
-                  <FormControl fullWidth>
-                      <TextField
-                          type='text'
-                          value={username}
-                          onChange={(e) => setUsername(e.currentTarget.value)}
-                          size="medium"
-                          label="Username"
-                      />
-                      <TextField label="Password"
-                                         type={showPassword ? 'text' : 'password'}
-                                         value={password}
-                                         onChange={(e) => setPassword(e.currentTarget.value)}
-                                         size="medium"
-                                 InputProps={{
-                                     endAdornment: (
-                                         <IconButton
-                                             aria-label="toggle password visibility"
-                                             onClick={handleClickShowPassword}
-                                             onMouseDown={handleMouseDownPassword}
-                                         >
-                                             {showPassword ? <Visibility /> : <VisibilityOff />}
-                                         </IconButton>
-                                     )
-                                 }}
-                      />
-                      <Button variant="contained" color="primary" className="SubmitButton"
-                              onClick={() => setModalVisibility(true)}>Login</Button>
-                  </FormControl>
-              </Grid>
-          </Grid>
-          <Dialog onClose={()=>setModalVisibility(false)} open={modalVisibility}>
-              <Typography>You've entered a {username} and a password with length equal to {password.length}</Typography>
-              <Button variant="contained" color="primary" onClick={() => setModalVisibility(false)}>Close</Button>
-          </Dialog>
-          </>
+      <Grommet plain theme={customTheme}>
+          <Header>
+              <Box height="xxsmall" width="small">
+                 <Image fill="vertical" src={logo}/>
+              </Box>
+              <Anchor icon={ <Logout/> } label="Logout" color="black"/>
+          </Header>
+          <Header background='brand' justify="start" height='xxsmall'>
+              <Text size="large" weight="bold" className="app-name">Extra Long Apex App Name</Text>
+              <Nav direction='row' background='brand'>
+                  <NavButton label='Nav 1' active={activeNav} onClick={(e) => setActiveNav(e.currentTarget.value)}/>
+                  <NavButton label='Nav 2' active={activeNav} onClick={(e) => setActiveNav(e.currentTarget.value)}/>
+                  <NavButton label='Nav 3' active={activeNav} onClick={(e) => setActiveNav(e.currentTarget.value)}/>
+                  <NavButton label='Nav 4' active={activeNav} onClick={(e) => setActiveNav(e.currentTarget.value)}/>
+                  <NavButton label='Nav 5' active={activeNav} onClick={(e) => setActiveNav(e.currentTarget.value)}/>
+              </Nav>
+          </Header>
+          <Box alignContent="center">
+              <Box width="medium" alignSelf="center">
+                  <Form>
+                      <FormField name="username" htmlFor="username" label="Username / Email">
+                          <TextInput id="username" name="username" onChange={(e) => setUsername(e.currentTarget.value)}/>
+                      </FormField>
+                      <FormField name="password" htmlFor="password" label="Password">
+                          <TextInput id="password" name="password" type='password' onChange={(e) => setPassword(e.currentTarget.value)}/>
+                      </FormField>
+                      <Button label='Login' icon={<Login />} onClick={() => setModalVisibility(true)}/>
+                  </Form>
+              </Box>
+          </Box>
+          {modalVisibility &&
+          <Layer onEsc={() => setModalVisibility(false)} onClickOutside={() => setModalVisibility(false)}>
+              <Box pad="medium">
+                <Text>You've entered a {username} and a password with length equal to {password.length}</Text>
+                <Button primary size="small" alignSelf="end"
+                        label="Close" onClick={() => setModalVisibility(false)} />
+              </Box>
+          </Layer>
+          }
+      </Grommet>
   )
 }
 
-export default App
+export default App;
