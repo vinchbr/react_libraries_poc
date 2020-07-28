@@ -1,122 +1,104 @@
 import React, { useState }  from 'react'
+import {TabMenu} from 'primereact/tabmenu'
+import {Button} from 'primereact/button'
 import './App.scss'
 import logo from './genericLogo.svg'
-import {
-    AppBar,
-    Box,
-    Button, Dialog,
-    FormControl, Grid, IconButton,
-    TextField,
-    Toolbar,
-    Typography,
-    withStyles
-} from "@material-ui/core"
-import {ToggleButtonGroup, ToggleButton} from "@material-ui/lab"
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {Password} from "primereact/password";
+import {InputText} from "primereact/inputtext";
+import {Card} from "primereact/card";
+import {Dialog} from "primereact/dialog";
+import styled from "styled-components";
 
-const NavButton = withStyles({
-    root: {
-        borderRadius: 0,
-        border: "unset",
-        borderBottom: "solid 3px transparent",
-        color: "white",
-        maxHeight: "3.6rem",
-        alignItems: "unset",
-        '&:hover': {
-            borderBottom: "coral solid 3px",
-            backgroundColor: "unset"
-        },
-    },
-    selected: {
-        borderBottom: "coral solid 3px",
-        color: "white !important"
+const LogoutButton = styled(Button)`
+  background-color: transparent !important;
+  border: none !important;
+  color: black !important;
+`
+
+const ApexMenu = styled(TabMenu)`
+    .p-tabmenu-nav {
+        border-bottom: 0 !important;
+        height: 100% !important;
     }
-})(ToggleButton)
+
+    .p-menuitem-text {
+        color: white !important;
+    }
+
+    .p-menuitem {
+        padding-top: .25rem;
+    }
+    
+    .p-menuitem-link {
+        background-color: transparent !important;
+        border: 0 !important;
+        height: 100%;
+        padding-top: 1.3rem !important;
+        &:focus {
+            box-shadow: unset !important;
+            -webkit-box-shadow: unset ! important;
+        }
+    }
+
+    .p-tabmenuitem {
+        height: 100%; 
+        &.p-highlight {
+            border-bottom: .3rem solid darkorange !important;
+        }
+        &:hover {
+            border-bottom: .3rem solid darkorange !important;
+        }
+    }    
+
+    height: 100%;  
+`
 
 const App = () => {
+    const [items] = useState([
+        {
+            label: 'Nav Item 1',
+        },
+        {
+            label: 'Nav Item 2',
+        },
+        {
+            label: 'Nav Item 3',
+        },
+        {
+            label: 'Nav Item 4',
+        },
+    ])
     const [username, setUsername] = useState('')
-    const [ password, setPassword] = useState('')
+    const [password, setPassword] = useState('')
     const [modalVisibility, setModalVisibility] = useState(false)
-    const [activeNav, setActiveNav] = useState()
-    const [showPassword, setShowPassword] = useState(false)
-    const handleActiveButton = (event: any, newActive: any) => {
-        setActiveNav(newActive)
-    }
-
-    const handleClickShowPassword = () => {
-       setShowPassword(!showPassword)
-    }
-
-    const handleMouseDownPassword = (event: any) => {
-        event.preventDefault();
-    };
   return (
       <>
-          <div className='flex-grow'>
-          <AppBar position='static' className="header-bar">
-              <Toolbar variant="dense" className='top-logo-bar'>
-                  <Box className='flex-grow'>
-                    <img src={logo} className='logo' alt="logo"/>
-                  </Box>
-                 <Button>
-                     Logout  <ExitToAppIcon/>
-                 </Button>
-              </Toolbar>
-              <Toolbar disableGutters variant='dense' className='nav-bar'>
-                  <Typography variant="h6" className='app-name'>
-                      Extra Long Apex App Name
-                  </Typography>
-                  <ToggleButtonGroup exclusive size='large' value={activeNav} onChange={handleActiveButton}>
-                    <NavButton value="nav-1" disableFocusRipple className="NavButton">Nav 1</NavButton>
-                    <NavButton value="nav-2" disableFocusRipple className="NavButton">Nav 2</NavButton>
-                    <NavButton value="nav-3" disableFocusRipple className="NavButton">Nav 3</NavButton>
-                    <NavButton value="nav-4" disableFocusRipple className="NavButton">Nav 4</NavButton>
-                  </ToggleButtonGroup>
-              </Toolbar>
-          </AppBar>
+          <div className='p-grid'>
+              <div className='p-grid p-justify-between top-header'>
+                  <img src={logo} alt="Logo" className='p-col-2'/>
+                  <LogoutButton label="Logout" className='p-col-1 p-nogutter' icon="pi pi-sign-out" iconPos="right"/>
+              </div>
+              <div className='p-grid bottom-header'>
+                  <div className='app-name p-col'>
+                      <p>APEX EXTRA LONG NAME FOR AN APPLICATION</p>
+                  </div>
+                  <ApexMenu model={items}/>
+              </div>
+                  <Card className='p-col-2 p-offset-4'>
+                      <div className='p-fluid'>
+                          <label htmlFor='username'>Username / Email</label>
+                          <InputText id='username' value={username} onChange={(e) => setUsername(e.currentTarget.value)}/>
+                          <label htmlFor='password'>Password</label>
+                          <Password id='password' value={password} onChange={(e) => setPassword(e.currentTarget.value)}/>
+                      </div>
+                      <Button label='Login' icon='pi pi-sign-in' onClick={(e) => setModalVisibility(true)}/>
+                  </Card>
           </div>
-          <Grid container spacing={3}>
-              <Grid item xs={12}/>
-              <Grid item xs={12}/>
-              <Grid item xs={4}/>
-              <Grid item xs={3}>
-                  <FormControl fullWidth>
-                      <TextField
-                          type='text'
-                          value={username}
-                          onChange={(e) => setUsername(e.currentTarget.value)}
-                          size="medium"
-                          label="Username"
-                      />
-                      <TextField label="Password"
-                                         type={showPassword ? 'text' : 'password'}
-                                         value={password}
-                                         onChange={(e) => setPassword(e.currentTarget.value)}
-                                         size="medium"
-                                 InputProps={{
-                                     endAdornment: (
-                                         <IconButton
-                                             aria-label="toggle password visibility"
-                                             onClick={handleClickShowPassword}
-                                             onMouseDown={handleMouseDownPassword}
-                                         >
-                                             {showPassword ? <Visibility /> : <VisibilityOff />}
-                                         </IconButton>
-                                     )
-                                 }}
-                      />
-                      <Button variant="contained" color="primary" className="SubmitButton"
-                              onClick={() => setModalVisibility(true)}>Login</Button>
-                  </FormControl>
-              </Grid>
-          </Grid>
-          <Dialog onClose={()=>setModalVisibility(false)} open={modalVisibility}>
-              <Typography>You've entered a {username} and a password with length equal to {password.length}</Typography>
-              <Button variant="contained" color="primary" onClick={() => setModalVisibility(false)}>Close</Button>
+          <Dialog onHide={() => setModalVisibility(false)} visible={modalVisibility}>
+              You've entered a {username} and a password with length equal to {password.length}
           </Dialog>
-          </>
+      </>
   )
 }
 
-export default App
+export default App;
